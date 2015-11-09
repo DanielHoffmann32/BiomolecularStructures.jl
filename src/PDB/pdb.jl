@@ -13,7 +13,7 @@ using PdbTool.Chain
 using PdbTool.Pdb
 
 # get a structure from a PDB File
-function get_structure(filename::String)
+function get_structure(filename::AbstractString)
 	pdb = PdbTool.parsePdb(filename)
 	pdb.fileName = filename
 	return pdb
@@ -27,7 +27,7 @@ function get_chains(structure::Pdb)
 
 	#chainMatrices = Any[]
 
-	chainMatrices = (String => Array{Float64,2})[]
+	chainMatrices = (AbstractString => Array{Float64,2})[]
 
 	for c in chains
 		#push!(chainMatrices,structure_to_matrix(c))
@@ -66,8 +66,8 @@ function structure_to_matrix(structure::Chain)
 end
 
 # Export a matrix of C_alpha atom coordinates to a PDB file
-function export_to_pdb(residueName::String,chainID::String,matrix::Array{Float64,2}, filename::String)
-	lines = String[]
+function export_to_pdb(residueName::AbstractString,chainID::AbstractString,matrix::Array{Float64,2}, filename::AbstractString)
+	lines = AbstractString[]
 
 	atomExpr = FormatExpr("{: <6}{: >5} {: >4}{: <1}{: >3} {: <1}{: >4}{: <1}   {: >8}{: >8}{: >8}{: >6}{: >6}      {: <4}{: >2}{: <2}\n")
 
@@ -85,7 +85,7 @@ function export_to_pdb(residueName::String,chainID::String,matrix::Array{Float64
 end
 
 # Get a PDB file by ID from rcsb.org
-function get_remote_pdb(id::String)
+function get_remote_pdb(id::AbstractString)
 	# create cache if not present
 	if !isdir(Pkg.dir("BiomolecularStructures", ".cache")) 
 		mkdir(Pkg.dir("BiomolecularStructures", ".cache"))
